@@ -110,15 +110,18 @@ class RSAKey extends Key implements PEMInterface {
                     $version = $seq->getChildAt(0)->getValue();
                     if ($version != 0) throw new KeyException('Unsupported RSA private key version');
 
+                    $private_bitstring = $seq->getChildAt(2)->getValue();
+                    $private_seq = $der->decode($private_bitstring);
+
                     $jwk['kty'] = self::KTY;
-                    $jwk['n'] = Util::base64url_encode($seq->getChildAt(1)->getValueAsUIntOctets());
-                    $jwk['e'] = Util::base64url_encode($seq->getChildAt(2)->getValueAsUIntOctets());
-                    $jwk['d'] = Util::base64url_encode($seq->getChildAt(3)->getValueAsUIntOctets());
-                    $jwk['p'] = Util::base64url_encode($seq->getChildAt(4)->getValueAsUIntOctets());
-                    $jwk['q'] = Util::base64url_encode($seq->getChildAt(5)->getValueAsUIntOctets());
-                    $jwk['dp'] = Util::base64url_encode($seq->getChildAt(6)->getValueAsUIntOctets());
-                    $jwk['dq'] = Util::base64url_encode($seq->getChildAt(7)->getValueAsUIntOctets());
-                    $jwk['qi'] = Util::base64url_encode($seq->getChildAt(8)->getValueAsUIntOctets());
+                    $jwk['n'] = Util::base64url_encode($private_seq->getChildAt(1)->getValueAsUIntOctets());
+                    $jwk['e'] = Util::base64url_encode($private_seq->getChildAt(2)->getValueAsUIntOctets());
+                    $jwk['d'] = Util::base64url_encode($private_seq->getChildAt(3)->getValueAsUIntOctets());
+                    $jwk['p'] = Util::base64url_encode($private_seq->getChildAt(4)->getValueAsUIntOctets());
+                    $jwk['q'] = Util::base64url_encode($private_seq->getChildAt(5)->getValueAsUIntOctets());
+                    $jwk['dp'] = Util::base64url_encode($private_seq->getChildAt(6)->getValueAsUIntOctets());
+                    $jwk['dq'] = Util::base64url_encode($private_seq->getChildAt(7)->getValueAsUIntOctets());
+                    $jwk['qi'] = Util::base64url_encode($private_seq->getChildAt(8)->getValueAsUIntOctets());
                 } else {
                     throw new KeyException('Unrecognised key format');
                 }
