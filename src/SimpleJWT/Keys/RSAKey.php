@@ -2,7 +2,7 @@
 /*
  * SimpleJWT
  *
- * Copyright (C) Kelvin Mo 2015-2024
+ * Copyright (C) Kelvin Mo 2015-2023
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -65,7 +65,7 @@ class RSAKey extends Key implements PEMInterface {
      * @param string $password the password, if the key is password protected
      * @param string $alg the algorithm, if the key is password protected
      */
-    public function __construct($data, string $format, ?string $password = null, ?string $alg = 'PBES2-HS256+A128KW') {
+    public function __construct($data, $format, $password = null, $alg = 'PBES2-HS256+A128KW', $type = null) {
         switch ($format) {
             case 'php':
             case 'json':
@@ -110,8 +110,12 @@ class RSAKey extends Key implements PEMInterface {
                     $version = $seq->getChildAt(0)->getValue();
                     if ($version != 0) throw new KeyException('Unsupported RSA private key version');
 
-                    $private_bitstring = $seq->getChildAt(2)->getValue();
-                    $private_seq = $der->decode($private_bitstring);
+                    if ($type == 'kona') {
+                        $private_bitstring = $seq->getChildAt(2)->getValue();
+                        $private_seq = $der->decode($private_bitstring);
+                    } else {
+                        $private_seq = $seq;
+                    }
 
                     $jwk['kty'] = self::KTY;
                     $jwk['n'] = Util::base64url_encode($private_seq->getChildAt(1)->getValueAsUIntOctets());
@@ -135,16 +139,16 @@ class RSAKey extends Key implements PEMInterface {
         if (!isset($this->data['kty'])) $this->data['kty'] = self::KTY;
     }
 
-    public function getSize(): int {
+    public function getSize() {
         // The modulus is a signed integer, therefore ignore the first byte
         return 8 * (strlen(Util::base64url_decode($this->data['n'])) - 1);
     }
 
-    public function isPublic(): bool {
+    public function isPublic() {
         return !isset($this->data['p']);
     }
 
-    public function getPublicKey(): ?KeyInterface {
+    public function getPublicKey() {
         $data = [
             'kty' => $this->data['kty'],
             'n' => $this->data['n'],
@@ -154,7 +158,7 @@ class RSAKey extends Key implements PEMInterface {
         return new RSAKey($data, 'php');
     }
 
-    public function toPEM(): string {
+    public function toPEM() {
         $der = new DER();
 
         if ($this->isPublic()) {
@@ -192,7 +196,7 @@ class RSAKey extends Key implements PEMInterface {
         }
     }
 
-    protected function getThumbnailMembers(): array {
+    protected function getThumbnailMembers() {
         // https://tools.ietf.org/html/rfc7638#section-3.2
         return ['e', 'kty', 'n'];
     }
