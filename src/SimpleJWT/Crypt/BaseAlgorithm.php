@@ -76,7 +76,7 @@ abstract class BaseAlgorithm implements AlgorithmInterface {
      *
      * @return string|null the algorithm
      */
-    public function getAlg(): ?string {
+    public function getAlg() {
         return $this->alg;
     }
 
@@ -99,7 +99,7 @@ abstract class BaseAlgorithm implements AlgorithmInterface {
      * @param array<string, mixed>|string $args the criteria
      * @return KeyInterface|null the found key, or null
      */
-    protected function selectKey(KeySet $keys, ...$args): ?KeyInterface {
+    protected function selectKey(KeySet $keys, ...$args) {
         $criteria = $this->getKeyCriteria();
         
         foreach ($args as $arg) {
@@ -119,7 +119,7 @@ abstract class BaseAlgorithm implements AlgorithmInterface {
      *
      * @return array<string, mixed> the key selection criteria
      */
-    abstract public function getKeyCriteria(): array;
+    abstract public function getKeyCriteria();
 }
 
 ?>
