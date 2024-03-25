@@ -135,16 +135,16 @@ class RSAKey extends Key implements PEMInterface {
         if (!isset($this->data['kty'])) $this->data['kty'] = self::KTY;
     }
 
-    public function getSize(): int {
+    public function getSize() {
         // The modulus is a signed integer, therefore ignore the first byte
         return 8 * (strlen(Util::base64url_decode($this->data['n'])) - 1);
     }
 
-    public function isPublic(): bool {
+    public function isPublic() {
         return !isset($this->data['p']);
     }
 
-    public function getPublicKey(): ?KeyInterface {
+    public function getPublicKey() {
         $data = [
             'kty' => $this->data['kty'],
             'n' => $this->data['n'],
@@ -154,7 +154,7 @@ class RSAKey extends Key implements PEMInterface {
         return new RSAKey($data, 'php');
     }
 
-    public function toPEM(): string {
+    public function toPEM() {
         $der = new DER();
 
         if ($this->isPublic()) {
@@ -192,7 +192,7 @@ class RSAKey extends Key implements PEMInterface {
         }
     }
 
-    protected function getThumbnailMembers(): array {
+    protected function getThumbnailMembers() {
         // https://tools.ietf.org/html/rfc7638#section-3.2
         return ['e', 'kty', 'n'];
     }
