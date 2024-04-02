@@ -161,7 +161,7 @@ abstract class Key implements KeyInterface {
     /**
      * {@inheritdoc}
      */
-    public function getKeyId(bool $generate = false): ?string {
+    public function getKeyId(bool $generate = false) {
         if (!isset($this->data['kid']) && $generate) {
             $this->data['kid'] = substr($this->getThumbnail(), 0, 7);
         }
@@ -178,14 +178,14 @@ abstract class Key implements KeyInterface {
     /**
      * {@inheritdoc}
      */
-    public function getKeyType(): string {
+    public function getKeyType() {
         return $this->data['kty'];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getUse(): ?string {
+    public function getUse() {
         return (isset($this->data['use'])) ? $this->data['use'] : null;
     }
 
@@ -199,7 +199,7 @@ abstract class Key implements KeyInterface {
     /**
      * {@inheritdoc}
      */
-    public function getOperations(): ?array {
+    public function getOperations() {
         return (isset($this->data['key_ops'])) ? $this->data['key_ops'] : null;
     }
 
@@ -213,7 +213,7 @@ abstract class Key implements KeyInterface {
     /**
      * {@inheritdoc}
      */
-    public function getKeyData(): array {
+    public function getKeyData() {
         /** @var array<string, mixed> $data */
         $data = $this->data;
         return $data;
@@ -262,12 +262,12 @@ abstract class Key implements KeyInterface {
      * @return array<string> the array of keys
      * @see https://tools.ietf.org/html/rfc7638
      */
-    abstract protected function getThumbnailMembers(): array;
+    abstract protected function getThumbnailMembers();
 
     /**
      * {@inheritdoc}
      */
-    public final function getThumbnail(): string {
+    public final function getThumbnail() {
         if ($this->thumbnail == null) {
             $members = $this->getThumbnailMembers();
             $signing = [];
