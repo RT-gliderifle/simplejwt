@@ -49,7 +49,7 @@ interface KeyInterface {
      * present
      * @return string|null the key ID
      */
-    public function getKeyId(bool $generate = false): ?string;
+    public function getKeyId(bool $generate = false);
 
     /**
      * Sets the key ID
@@ -64,14 +64,14 @@ interface KeyInterface {
      *
      * @return string the type
      */
-    public function getKeyType(): string;
+    public function getKeyType();
 
     /**
      * Returns the allowed usage for the key
      *
      * @return string the allowed usage
      */
-    public function getUse(): ?string;
+    public function getUse();
 
     /**
      * Sets the allowed usage for the key
@@ -88,7 +88,7 @@ interface KeyInterface {
      *
      * @return array<string> the allowed operations
      */
-    public function getOperations(): ?array;
+    public function getOperations();
 
     /**
      * Sets the allowed operations for the key
@@ -107,7 +107,7 @@ interface KeyInterface {
      *
      * @return int the size of the key in bits
      */
-    public function getSize(): int;
+    public function getSize();
 
     /**
      * Returns the underlying parameters for the key.  The parameters should
@@ -115,7 +115,7 @@ interface KeyInterface {
      *
      * @return array<string, mixed> the parameters
      */
-    public function getKeyData(): array;
+    public function getKeyData();
 
     /**
      * Determines whether the key is a public key.
@@ -125,7 +125,7 @@ interface KeyInterface {
      *
      * @return bool true if the key is public
      */
-    public function isPublic(): bool;
+    public function isPublic();
 
     /**
      * Returns the public key.
@@ -133,7 +133,7 @@ interface KeyInterface {
      * @return KeyInterface|null the public key, or null if the public key
      * does not exist (e.g. is a symmetric key)
      */
-    public function getPublicKey(): ?KeyInterface;
+    public function getPublicKey();
 
     /**
      * Obtains a thumbnail for the key.  The thumbnail is derived from the
@@ -145,7 +145,7 @@ interface KeyInterface {
      *
      * @return string the thumbnail
      */
-    public function getThumbnail(): string;
+    public function getThumbnail();
 }
 
 ?>
